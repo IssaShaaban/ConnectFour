@@ -45,16 +45,19 @@ public class ConnectFour
     {
         int winnerAcross;
         int winnerVertical;
+        int winnerDiagonals;
         while (true)
         {
             inputPrompt(PLAYER1);
             winnerAcross = horizontal(PLAYER1);
             winnerVertical = vertical(PLAYER1);
-            if (winnerAcross == 1 || winnerVertical == 1 ) {System.out.println("Player 1 has won!"); break;}
+            winnerDiagonals = diagonals(PLAYER1);
+            if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 1 has won!"); break;}
             inputPrompt(PLAYER2);
             winnerAcross = horizontal(PLAYER2);
             winnerVertical = vertical(PLAYER2);
-            if (winnerAcross == 1 || winnerVertical == 1 ) {System.out.println("Player 2 has won!"); break;}
+            winnerDiagonals = diagonals(PLAYER2);
+            if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 2 has won!"); break;}
         }
         
     }
@@ -140,6 +143,57 @@ public class ConnectFour
                 if (grid[row][column] == player) toWinCounter++;
                 else if (grid[row][column] != player) toWinCounter=0;
             }
+        return 0;
+    }
+
+    public int diagonal1(String player,int row,int column)
+    {
+        int toWinCounter = 0;
+        int currentRow = row - 1;
+        int currentColumn = column - 1;
+        while (true)
+        {
+            if (toWinCounter == toWin) return 1;
+            if ((currentRow >= rows || currentRow < 0)) break;
+            if ((currentColumn >= columns || currentColumn < 0)) break;
+            if (grid[currentRow][currentColumn] == player) toWinCounter++;
+            currentColumn--; currentRow--;
+        }
+        return 0;
+    }
+
+    public int diagonal2(String player,int row,int column)
+    {
+        int toWinCounter = 0;
+        int currentRow = row + 1;
+        int currentColumn = column - 1;
+        while (true)
+        {
+            if (toWinCounter == toWin) return 1;
+            if ((currentRow >= rows || currentRow < 0)) break;
+            if ((currentColumn >= columns || currentColumn < 0)) break;
+            if (grid[currentRow][currentColumn] == player) toWinCounter++;
+            currentColumn--; currentRow++;
+        }
+        return 0;
+    }
+
+    public int diagonals(String player)
+    {
+        int value1;
+        int value2;
+        for (int i=0;i<rows;i++)
+        {
+            for (int j=0;j<columns;j++)
+            {
+                value1 = diagonal1(player, i, i);
+                value2 = diagonal2(player, i, j);
+
+                if (value1 == 1) return 1;
+                if (value2 == 1) return 1;
+            }
+            System.out.println();
+        }
         return 0;
     }
 }
