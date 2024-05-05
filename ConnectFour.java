@@ -5,6 +5,7 @@ public class ConnectFour
     private String[][] grid;
     private int columns;
     private int rows;
+    private int toWin;
     private final String PLAYER1 = "X";
     private final String PLAYER2 = "O";
     private Scanner input = new Scanner(System.in);
@@ -32,7 +33,7 @@ public class ConnectFour
         }
         newGrid(columns, rows);
         System.out.println("Enter the number of tokens in a row needed to win!");
-        int toWin = input.nextInt();
+        toWin = input.nextInt();
         while (toWin >= columns)
         {
             System.out.println("Number cannot be equal to or greater than number of columns!");
@@ -42,11 +43,20 @@ public class ConnectFour
 
     public void runGame()
     {
+        int winnerAcross;
+        int winnerVertical;
         while (true)
         {
             inputPrompt(PLAYER1);
+            winnerAcross = horizontal(PLAYER1);
+            winnerVertical = vertical(PLAYER1);
+            if (winnerAcross == 1 || winnerVertical == 1 ) {System.out.println("Player 1 has won!"); break;}
             inputPrompt(PLAYER2);
+            winnerAcross = horizontal(PLAYER2);
+            winnerVertical = vertical(PLAYER2);
+            if (winnerAcross == 1 || winnerVertical == 1 ) {System.out.println("Player 2 has won!"); break;}
         }
+        
     }
 
     public void inputPrompt(String player)
@@ -60,6 +70,7 @@ public class ConnectFour
         {
             addToken(col, player);
         }
+        else System.out.println("Invalid input!");
     }
 
     public String[][] newGrid(int col,int row)
@@ -86,7 +97,7 @@ public class ConnectFour
         {
             if (grid[row][col].equals("-"))
             {
-                grid[row][col] = player; 
+                grid[row][col] = player;
                 loop = false;
             }
             row--;
@@ -104,5 +115,31 @@ public class ConnectFour
             }
             System.out.println();
         }
+    }
+
+    public int horizontal(String player)
+    {
+        int toWinCounter = 0;
+        for (int row=0;row<rows;row++)
+            for (int column = 0;column<columns;column++)
+            {
+                if (toWinCounter == toWin) return 1;
+                if (grid[row][column] == player) toWinCounter++;
+                else if (grid[row][column] != player) toWinCounter=0;
+            }
+        return 0;
+    }
+
+    public int vertical(String player)
+    {
+        int toWinCounter = 0;
+        for (int column=0;column<columns;column++)
+            for (int row=0;row<rows;row++)
+            {
+                if (toWinCounter == toWin) return 1;
+                if (grid[row][column] == player) toWinCounter++;
+                else if (grid[row][column] != player) toWinCounter=0;
+            }
+        return 0;
     }
 }
