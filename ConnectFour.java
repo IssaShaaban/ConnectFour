@@ -57,6 +57,7 @@ public class ConnectFour
         int winnerAcross;
         int winnerVertical;
         int winnerDiagonals;
+        boolean draw = false;
         while (true)
         {
             inputPrompt(PLAYER1);
@@ -64,12 +65,16 @@ public class ConnectFour
             winnerAcross = horizontal(PLAYER1);
             winnerVertical = vertical(PLAYER1);
             winnerDiagonals = diagonals(PLAYER1);
+            draw = gameDraw();
             if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 1 has won!"); break;}
+            if (draw == true) System.out.println("Game ended in a draw!");
             inputPrompt(PLAYER2);
             gridState();
             winnerAcross = horizontal(PLAYER2);
             winnerVertical = vertical(PLAYER2);
             winnerDiagonals = diagonals(PLAYER2);
+            draw = gameDraw();
+            if (draw == true) System.out.println("Game ended in a draw!");
             if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 2 has won!"); break;}
         }
         
@@ -253,5 +258,23 @@ public class ConnectFour
             }
         }
         return 0;
+    }
+
+    /**
+     * Checks to see if all tokens have been entered and returns a draw if true
+     * @return True or false
+     */
+    public boolean gameDraw()
+    {
+
+        for (int i=0;i<rows;i++)
+        {
+            for (int j=0;j<columns;j++)
+            {
+                if (grid[i][j].equals("-")) return false;
+            }
+            System.out.println();
+        }
+        return true;
     }
 }
