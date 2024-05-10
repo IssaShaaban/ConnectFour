@@ -49,35 +49,37 @@ public class ConnectFour
         }
     }
 
-    /**
-     * Runs the game
-     */
-    public void runGame()
+    public int gameScript(String player)
     {
         int winnerAcross;
         int winnerVertical;
         int winnerDiagonals;
         boolean draw = false;
-        while (true)
+        String user;
+        if (player == PLAYER1) user = "1";
+        else user = "2";
+        inputPrompt(player);
+        gridState();
+        winnerAcross = horizontal(player);
+        winnerVertical = vertical(player);
+        winnerDiagonals = diagonals(player);
+        draw = gameDraw();
+        if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player " + user +" has won!"); return 1;}
+        if (draw == true){ System.out.println("Game ended in a draw!"); return 0;}
+        return 2;
+    }
+
+    /**
+     * Runs the game
+     */
+    public void runGame()
+    {
+        int gameEnd = 2;
+        while (gameEnd == 2)
         {
-            inputPrompt(PLAYER1);
-            gridState();
-            winnerAcross = horizontal(PLAYER1);
-            winnerVertical = vertical(PLAYER1);
-            winnerDiagonals = diagonals(PLAYER1);
-            draw = gameDraw();
-            if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 1 has won!"); break;}
-            if (draw == true) System.out.println("Game ended in a draw!");
-            inputPrompt(PLAYER2);
-            gridState();
-            winnerAcross = horizontal(PLAYER2);
-            winnerVertical = vertical(PLAYER2);
-            winnerDiagonals = diagonals(PLAYER2);
-            draw = gameDraw();
-            if (draw == true) System.out.println("Game ended in a draw!");
-            if (winnerAcross == 1 || winnerVertical == 1 || winnerDiagonals == 1) {System.out.println("Player 2 has won!"); break;}
+            gameEnd = gameScript(PLAYER1);
+            gameEnd = gameScript(PLAYER2);
         }
-        
     }
 
     /**
